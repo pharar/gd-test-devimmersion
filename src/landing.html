@@ -22,28 +22,26 @@
     <!-- Fixed navbar -->
     <nav class="navbar navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="#">GoDaddy</a>
+        <div class="navbar-nav">
+            <ul class="nav justify-content-end">
+                <li class="nav-item pr-3">
+                    <a class="nav-link active" href="#">{acct #}</a>
+                </li>
+                <li class="nav-item pr-3"> 
+                    <a class="nav-link" href="index.html">Logout</a>
+                </li>
+            </ul>
+        </div>
     </nav>
     </header>
 
     <!-- Begin page content -->
     <main role="main" class="flex-shrink-0">
     <div class="container">
-        <h1 class="mt-5">Welcome to the GoDaddy ATM . <i class="fas fa-dollar-sign"></i></h1>
-        <p class="lead">Enter your account number to get started:</p>
-        <p><form class="form" action="landing.html" method="POST">
-            <div class="row">
-                <div class="form-group col-sm">
-                    <label for="account" class="sr-only">Account #</label>
-                    <input type="number" class="form-control" id="account" placeholder="Your account number" aria-describedby="accountHelpBlock" required autofocus>
-                    <small id="accountHelpBlock" class="form-text text-muted">
-                        <span id="helpText">The account have to be a number and have to exist.</span>
-                    </small>
-                </div>
-                <div class="col-sm">
-                    <button type="submit" class="btn btn-primary sm-2">Login</button>
-                </div>
-            </div>
-          </form></p>
+        <h2 class="mt-5">Welcome Account {acct #}</h2>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" role="button" href="balance.html">Check your balance</a>
+        </p>
     </div>
     </main>
 
