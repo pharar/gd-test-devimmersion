@@ -5,19 +5,50 @@ GRANT USAGE ON *.* TO 'dbuser'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOU
 CREATE DATABASE IF NOT EXISTS `dbuser`;
 GRANT ALL PRIVILEGES ON `dbuser`.* TO 'dbuser'@'localhost';
 
--- Tables creation
+-- Tables generation
+-- #########
+-- ACCOUNTS
+-- #########
 CREATE TABLE `dbuser`.`accounts` ( 
     `id` BIGINT NOT NULL AUTO_INCREMENT , 
     `account` INT UNSIGNED NOT NULL , PRIMARY KEY (`id`), UNIQUE `account` (`account`)
 ) ENGINE = InnoDB COMMENT = 'Account list';
 
-CREATE TABLE `balance` (
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `account` (`account`);
+
+ALTER TABLE `accounts`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+INSERT INTO `accounts` (`id`, `account`) VALUES
+(1, 23416),
+(4, 31038),
+(3, 65275),
+(2, 82352);
+
+-- #########
+-- BALANCES
+-- #########
+CREATE TABLE `dbuser`.`balances` (
   `id` bigint(20) NOT NULL,
   `acctId` bigint(11) NOT NULL,
   `balance` float NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Balance of the accounts';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Balances of the accounts';
 
--- Foreign key restrictions
-ALTER TABLE `balance`
-  ADD CONSTRAINT `balance_ibfk_1` FOREIGN KEY (`acctId`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `balances`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account` (`acctId`);
+
+ALTER TABLE `balances`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+ALTER TABLE `balances`
+  ADD CONSTRAINT `balances_ibfk_1` FOREIGN KEY (`acctId`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
+
+INSERT INTO `balances` (`id`, `acctId`, `balance`) VALUES
+(1, 1, 2051.52),
+(2, 2, -124.44),
+(3, 3, 3.55),
+(4, 4, -51.22);

@@ -1,3 +1,20 @@
+<?php
+    // TODO: Control of file/connection issues
+    include_once('db-connection.php');
+    $issue = false;
+
+    // TODO: Better sanitization of the POST variable
+    // TODO: XSS & CSRF protection. Session management, for instance.
+    if ($_POST['account'])
+    {
+        $acc = filter_var($_POST['account'], FILTER_SANITIZE_NUMBER_INT);
+        $sql = "SELECT balance FROM balances WHERE acctID = (SELECT id from accounts WHERE account=$acc);";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $balance = $row["balance"];
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,10 +42,10 @@
         <div class="navbar-nav">
             <ul class="nav justify-content-end">
                 <li class="nav-item pr-3">
-                    <a class="nav-link active" href="landing.html">{acct #}</a>
+                    <a class="nav-link active hBack" href="#"><?php echo $acc; ?></a>
                 </li>
                 <li class="nav-item pr-3"> 
-                    <a class="nav-link" href="index.html">Logout</a>
+                    <a class="nav-link" href="index.php">Logout</a>
                 </li>
             </ul>
         </div>
@@ -43,8 +60,12 @@
             <table class="table">
                 <tbody>
                 <tr>
-                    <td>Acct# {acct #}</td>
-                    <td class="text-success">$200.20</td>
+                    <td>Acct# <?php echo $acc; ?></td>
+                    <?php if($balance >= 0) { ?><td class="text-success">$<?php echo $balance; ?></td>
+                    <?php } else {
+                        $balance = $balance * (-1);
+                        echo "<td class=\"text-danger\">-\$$balance</td>";
+                    } ?>
                 </tr>
                 </tbody>
             </table>
@@ -75,3 +96,13 @@
     </script>
 </body>
 </html>
+<?php
+    // Issues handling
+        } else {
+            $issue = true;
+        }
+    } else $issue = true;
+
+    $conn->close();
+    if($issue) header("Location: index.php?error=login");
+?>

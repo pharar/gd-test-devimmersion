@@ -8,19 +8,22 @@ Nestor Angulo de Ugarte <pharar@gmail.com>
 ## Description
 You're going to build the start of a web based GoDaddy ATM. It will have preloaded accounts (defined below) that have set balances. The functionality of this ATM will be limited to looking up the pre-set balances of the listed accounts. 
 
-## Technologies
+## Used technologies
+- [Docker](https://www.docker.com/)
+- LAMP Stack (Linux + Apache + MySQL + PHP)
+- [Bootstrap v4](https://getbootstrap.com/)
+- [Font Awesome Icons](https://fontawesome.com/)
 
-    - Docker
-    - LAMP Stack
-    - Bootstrap v4
+## Notes 
+- About the database structure
+I have chosen a separated schema in 2 tables, just in prevision of adding more info in the "future" of this possible app. Of course, with the given information, it is not needed and with one only table would be more than enough.
 
 ## Pre-requisites and installation
 Docker has to be installed in your in order to run the development environment. With it, you can run quickly a container with a simple LAMP installation to test the webap. Here there is the list of versions used in this docker image: 
-
-    - PHP 7.3.6 
-    - Apache 2.4.29
-    - MySQL v5.7.26
-    - Ubuntu 18.04
+- Linux Ubuntu 18.04
+- Apache 2.4.29
+- MySQL v5.7.26
+- PHP 7.3.6 
 
 You can check more info here: [https://hub.docker.com/r/mattrayner/lamp](https://hub.docker.com/r/mattrayner/lamp)
 

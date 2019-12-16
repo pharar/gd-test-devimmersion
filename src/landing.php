@@ -1,3 +1,18 @@
+<?php
+    // TODO: Control of file/connection issues
+    include_once('db-connection.php');
+    $issue = false;
+
+    // TODO: Better sanitization of the POST variable
+    // TODO: XSS protection. Session management for instance.
+    if ($_POST['account'])
+    {
+        $acc = filter_var($_POST['account'], FILTER_SANITIZE_NUMBER_INT);
+        $sql = "SELECT id, account FROM accounts WHERE account = $acc;";
+        $result = $conn->query($sql);
+
+        if ($result->num_rows > 0) {
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,10 +40,10 @@
         <div class="navbar-nav">
             <ul class="nav justify-content-end">
                 <li class="nav-item pr-3">
-                    <a class="nav-link active" href="#">{acct #}</a>
+                    <a class="nav-link active" href="#"><?php echo $acc ?></a>
                 </li>
                 <li class="nav-item pr-3"> 
-                    <a class="nav-link" href="index.html">Logout</a>
+                    <a class="nav-link" href="index.php">Logout</a>
                 </li>
             </ul>
         </div>
@@ -38,9 +53,12 @@
     <!-- Begin page content -->
     <main role="main" class="flex-shrink-0">
     <div class="container">
-        <h2 class="mt-5">Welcome Account {acct #}</h2>
+        <h2 class="mt-5">Welcome Account <?php echo $acc ?></h2>
         <p class="lead">
-            <a class="btn btn-primary btn-lg" role="button" href="balance.html">Check your balance</a>
+            <form class="form" action="balance.php" method="post">
+                <input type="number" class="form-control" name="account" id="account" placeholder="Your account number" aria-describedby="accountHelpBlock" value="<?php echo $acc ?>" hidden>
+                <button type="submit" class="btn btn-primary btn-lg">Check your balance</button>
+            </form>
         </p>
     </div>
     </main>
@@ -57,3 +75,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
+<?php
+// output data of each row
+        } else {
+            $issue = true;
+        }
+    } else $issue = true;
+
+    $conn->close();
+    if($issue) header("Location: index.php?error=login");
+?>
